@@ -1,9 +1,12 @@
+const dotenv = require('dotenv').config();
+console.log(process.env.MONGO_URL)
 const config = {
     development: {
         url: 'mongodb://localhost/contacts',
     },
     production: {
-        url: 'mongodb://admin:admin123@ds361968.mlab.com:61968/contacts',
+        
+        url: process.env.MONGO_URL,
     }
 };
 
