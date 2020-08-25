@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,31 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'My Contacts App';
-  isAuthenticated: boolean = false
+ // isAuthenticated: boolean = false
+
+  constructor(private router:Router){
+    console.log("cons")
+  }
+
+  get isAuthenticated(): boolean{ 
+    return  (localStorage.getItem("user")) ? true:false
+  }
+
+  ngOnInit() {
+    // if(localStorage.getItem("user")){
+    //   this.isAuthenticated = true
+    // }else{
+    //   this.isAuthenticated = false
+    // }
+
+    // console.log("app")
+  }
+
+  onLogOut():void{
+    if(localStorage.getItem("user")){
+      localStorage.removeItem("user")
+   //   this.isAuthenticated = false
+      this.router.navigate(['/login'])
+    }
+  }
 }

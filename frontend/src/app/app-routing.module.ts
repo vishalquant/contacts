@@ -9,8 +9,8 @@ const routes: Routes = [
 
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
-  { path: '', component: HomeComponent, canActivate:[AuthGuard] },
-  { path: '**', redirectTo: ''}
+  { path: '',pathMatch: 'full', component: HomeComponent, canActivate:[AuthGuard] },
+  { path: '**', redirectTo: '', canActivate:[AuthGuard]}
 
 ];
 

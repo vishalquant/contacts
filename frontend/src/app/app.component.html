@@ -12,7 +12,7 @@
     <mat-icon>gamepad</mat-icon>
     Signup
   </button>
-  <button mat-button *ngIf="isAuthenticated">
+  <button mat-button *ngIf="isAuthenticated" (click)="onLogOut()">
     <mat-icon>exit_to_app</mat-icon>
     Logout
   </button>

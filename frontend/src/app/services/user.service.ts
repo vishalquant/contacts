@@ -13,4 +13,8 @@ export class UserService {
   signupUser(user){
     return this.httpClient.post(this.SERVER_URL+"/user/signup", user)
   }
+
+  loginUser(user){
+    return this.httpClient.post(this.SERVER_URL+"/user/login", user)
+  }
 }
