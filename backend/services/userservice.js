@@ -1,4 +1,5 @@
 const UserSchema = require("./../models/user");
+const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const router = require("../routes/users");
@@ -159,7 +160,67 @@ loginUser = function(user){
 
 }
 
+getUserProfile = function(userId){
+
+   return new Promise((resolve,reject)=>{
+
+    UserSchema.findById(userId,(err,user)=>{
+        console.log(user)
+        if(err){
+            console.log(err)
+            reject(err)
+        }
+
+        if(user){
+            console.log(user)
+            resolve(user)
+        }
+        else{
+            reject("User not found")
+        }
+    
+        })
+    })
+}
+
+saveUserProfile = function(userId,user){
+
+    return new Promise((resolve,reject)=>{
+        UserSchema.find({ $or:[{email:user.email},{phoneNumber:user.phoneNumber}], _id: { $ne: new ObjectId(userId) } },(err,userData)=>{
+
+            
+            if(err){
+                console.log(err)
+                reject(err)
+            }
+    
+            if(userData && userData.length>0){     
+               reject("User with this email or phone number already exists")       
+               // resolve(userData)
+            }
+            else{
+               UserSchema.findByIdAndUpdate(userId,user,{new:true},(err,userData)=>{
+                    
+                    if(err){
+                        reject(err)
+                    }
+                    if(userData){
+                        resolve(user)
+                    }
+                    else{
+                        reject("User not found")
+                    }
+                
+                })
+            }
+
+        })
+    })
+}
+
 module.exports = {
     signupUser,
-    loginUser
+    loginUser,
+    getUserProfile,
+    saveUserProfile
 }

@@ -17,4 +17,12 @@ export class UserService {
   loginUser(user){
     return this.httpClient.post(this.SERVER_URL+"/user/login", user)
   }
+
+  getUserProfile(userId){
+    return this.httpClient.get(this.SERVER_URL+"/user/profile/"+userId)
+  }
+
+  saveUserProfile(userId,user){
+    return this.httpClient.post(this.SERVER_URL+"/user/profile/"+userId, user)
+  }
 }

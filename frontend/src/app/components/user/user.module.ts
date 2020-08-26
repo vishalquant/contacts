@@ -1,12 +1,10 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { CommonModule } from '@angular/common';
 
-import { HttpClientModule } from '@angular/common/http';
+import { UserRoutingModule } from './user-routing.module';
+import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {   MatToolbarModule } from '@angular/material/toolbar'
 import {   MatMenuModule } from '@angular/material/menu'
 import {   MatIconModule } from '@angular/material/icon'
@@ -18,22 +16,16 @@ import {   MatInputModule } from '@angular/material/input'
 import {   MatCardModule } from '@angular/material/card'
 import {   MatSlideToggleModule } from '@angular/material/slide-toggle'
 import {   MatSelectModule } from '@angular/material/select';
-import { LoginComponent } from './components/login/login.component'
-//import {   MatOptionModule} from '@angular/material/select'
-
+import {   MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core'
+// import { MatMomentDateModule } from '@angular/material-moment-adapter'
 @NgModule({
-  declarations: [
-    AppComponent,
-    SignupComponent,
-    LoginComponent
-  ],
+  declarations: [HomeComponent, ProfileComponent],
   imports: [
-    BrowserModule,
-    AppRoutingModule,    
+    CommonModule,
+    UserRoutingModule,    
     FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
+    ReactiveFormsModule,    
     MatToolbarModule,
     MatInputModule,
     MatCardModule,
@@ -45,10 +37,9 @@ import { LoginComponent } from './components/login/login.component'
     MatSlideToggleModule,
     MatSelectModule,
     //MatOptionModule,
-    MatProgressSpinnerModule
-  
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+  ]
 })
-export class AppModule { }
+export class UserModule { }

@@ -35,4 +35,12 @@ export class AppComponent {
       this.router.navigate(['/login'])
     }
   }
+
+  onProfileClick(){
+console.log("s")
+    if(localStorage.getItem("user")){
+      let user = JSON.parse(localStorage.getItem("user"))
+      this.router.navigate(['/profile/'+user._id])
+    }
+  }
 }

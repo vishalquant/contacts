@@ -1,23 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit,OnDestroy {
 
   // Defining variables required 
   loginForm: FormGroup
   submitted:boolean = false
   errorMsg:string = ""
+  subscription:  Subscription
   constructor(private fb:FormBuilder,
     private router:Router,
     private userService:UserService) { 
 
+    this.subscription = new Subscription();
     // Initializing Form controls
     this.initializeForm()
 
@@ -54,7 +57,7 @@ export class LoginComponent implements OnInit {
       }
     }
    
-    this.userService.loginUser(user).subscribe((data)=>{
+  const loginSubscription =  this.userService.loginUser(user).subscribe((data)=>{
     if(data){
         this.errorMsg = ""
   
@@ -73,6 +76,12 @@ export class LoginComponent implements OnInit {
         this.errorMsg = err.error.message;       
       }      
     })
+
+    this.subscription.add(loginSubscription)
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 
 }
