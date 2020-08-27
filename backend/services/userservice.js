@@ -95,7 +95,7 @@ loginUser = function(user){
                             // hashed password stored in DB
                             bcrypt.compare(userModel.password, userData.password, function (err, res) {
                             if (err) {
-                                console.log("ee")
+                                
                                 // In case of error, reject the promise with error
                                 reject(err);
                                 
@@ -109,7 +109,7 @@ loginUser = function(user){
 
                                 resolve(result);
                             } else {       
-                                console.log("wrong pwd")                        
+                                                 
                                 reject("Wrong Password !!");
                                 }
                             });
@@ -165,14 +165,14 @@ getUserProfile = function(userId){
    return new Promise((resolve,reject)=>{
 
     UserSchema.findById(userId,(err,user)=>{
-        console.log(user)
+        
         if(err){
-            console.log(err)
+            
             reject(err)
         }
 
         if(user){
-            console.log(user)
+            
             resolve(user)
         }
         else{
@@ -190,7 +190,7 @@ saveUserProfile = function(userId,user){
 
             
             if(err){
-                console.log(err)
+                
                 reject(err)
             }
     
@@ -218,9 +218,48 @@ saveUserProfile = function(userId,user){
     })
 }
 
+resetPassword = function(userId,passwordBody){
+
+  return new Promise((resolve,reject)=>{
+       UserSchema.findById(userId,(err,user)=>{
+
+            if(err)
+                reject(err)
+
+            console.log(user)
+            console.log(passwordBody.old)
+            if(user){
+                bcrypt.compare(passwordBody.old,user.password,(err,result)=>{
+                    if(err)
+                        reject(err)
+
+                    if(result){
+                        bcrypt.hash(passwordBody.new,saltRounds,(err,hash)=>{
+                            if(err)
+                                reject(err)
+                                
+                            UserSchema.findByIdAndUpdate(userId,{password:hash},(err,user)=>{
+                                if(err)
+                                    reject(err)
+
+                                resolve(user)
+
+                            })
+                        });
+                    }
+                    else{
+                        reject("Incorrect Old Password")
+                    }
+                })
+            }
+        })
+    })
+}
+
 module.exports = {
     signupUser,
     loginUser,
     getUserProfile,
-    saveUserProfile
+    saveUserProfile,
+    resetPassword
 }

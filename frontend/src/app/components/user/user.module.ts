@@ -17,10 +17,12 @@ import {   MatCardModule } from '@angular/material/card'
 import {   MatSlideToggleModule } from '@angular/material/slide-toggle'
 import {   MatSelectModule } from '@angular/material/select';
 import {   MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core'
+import {   MatDialogModule } from '@angular/material/dialog';
+import { MatNativeDateModule } from '@angular/material/core';
+import { ResetPasswordComponent } from './reset-password/reset-password.component'
 // import { MatMomentDateModule } from '@angular/material-moment-adapter'
 @NgModule({
-  declarations: [HomeComponent, ProfileComponent],
+  declarations: [HomeComponent, ProfileComponent, ResetPasswordComponent],
   imports: [
     CommonModule,
     UserRoutingModule,    
@@ -39,7 +41,8 @@ import { MatNativeDateModule } from '@angular/material/core'
     //MatOptionModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatDialogModule
   ]
 })
 export class UserModule { }

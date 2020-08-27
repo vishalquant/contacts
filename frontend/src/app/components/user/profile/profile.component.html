@@ -46,7 +46,8 @@
                 <mat-option *ngFor="let option of cities" [value]="option.id">{{option.name}}</mat-option>             
             </mat-select>
           </mat-form-field>
-        <button mat-raised-button color="primary" [disabled]="!profileForm.valid">Save</button>
+        <button mat-raised-button color="primary" [disabled]="!profileForm.valid">Save</button>&nbsp;&nbsp;&nbsp;
+        <button type="button" mat-raised-button color="primary" (click)="onForgotPassword()">Reset Password</button>
       </form>
     </mat-card-content>
   </mat-card>

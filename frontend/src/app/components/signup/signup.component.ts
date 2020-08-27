@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit,OnDestroy {
   }
 
   // defining controls required in this 
-  // login form with the validators
+  // signup form with the validators
   initializeForm(){
     this.signupForm = this.fb.group({
       username:['',[Validators.required, Validators.pattern('^(?:\\d{10}|\\w+@\\w+\\.\\w{2,3})$')]],
@@ -39,7 +39,7 @@ export class SignupComponent implements OnInit,OnDestroy {
     })
   }
 
-  // Submit user form to login in case all the validation are a SUCCESS
+  // Submit user form in case all the validation are a SUCCESS
   onSubmit(user){
     this.submitted = true
    

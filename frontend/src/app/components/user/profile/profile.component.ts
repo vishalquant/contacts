@@ -6,6 +6,9 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../../../helpers/format-datepicker';
 import csc from 'country-state-city'
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ResetPasswordComponent } from '../reset-password/reset-password.component';
+
 
 @Component({
   selector: 'app-profile',
@@ -30,7 +33,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(private fb:FormBuilder,
     private router:Router,
     private userService:UserService,
-    private activeRoute: ActivatedRoute) { 
+    private activeRoute: ActivatedRoute,
+    private  dialog:  MatDialog) { 
 
     this.subscription = new Subscription();
     // Initializing Form controls
@@ -51,6 +55,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             {
               this.getCities(data["data"]["state"])
               this.profileForm.patchValue(data["data"])
+              this.user = data["data"]
             }
             else{
               this.errorMsg = "Could not load user profile"
@@ -86,6 +91,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
    const saveProfileSubscription =  this.userService.saveUserProfile(this.userId,profile).subscribe((user)=>{
       if(user && user["success"])  {    
         this.profileForm.patchValue(user["data"])
+        this.user = user["data"]
 
         this.errorMsg = ""
         this.successMsg = "Profile saved successfully."
@@ -104,6 +110,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscription.add(saveProfileSubscription)
 
 
+  }
+
+  onForgotPassword(){
+    this.dialog.open(ResetPasswordComponent,{data:this.user})
   }
 
   ngOnDestroy() {

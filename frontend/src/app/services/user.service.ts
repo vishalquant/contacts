@@ -25,4 +25,8 @@ export class UserService {
   saveUserProfile(userId,user){
     return this.httpClient.post(this.SERVER_URL+"/user/profile/"+userId, user)
   }
+
+  resetPassword(userId,oldPassword,newPassword){
+    return this.httpClient.patch(this.SERVER_URL+"/user/profile/"+userId, { old:oldPassword,new:newPassword })
+  }
 }
