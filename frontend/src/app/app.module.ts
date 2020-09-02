@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,19 +19,25 @@ import {   MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import {   MatInputModule } from '@angular/material/input'
 import {   MatCardModule } from '@angular/material/card'
 import {   MatSlideToggleModule } from '@angular/material/slide-toggle'
-import {   MatSelectModule } from '@angular/material/select';
-import { LoginComponent } from './components/login/login.component'
+import {   MatSelectModule } from '@angular/material/select'; 
+import { LoginComponent } from './components/login/login.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetComponent } from './components/reset/reset.component'
 //import {   MatOptionModule} from '@angular/material/select'
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
-    LoginComponent
+    LoginComponent,
+    ForgotPasswordComponent,
+    ResetComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule,  
     AppRoutingModule,    
+    CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

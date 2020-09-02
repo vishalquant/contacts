@@ -37,13 +37,13 @@
         <mat-form-field appearance="fill">
             <mat-label>State</mat-label>
             <mat-select formControlName="state" (selectionChange)="getCities($event.value)">
-              <mat-option *ngFor="let option of states" [value]="option.id">{{option.name}}</mat-option>             
+              <mat-option *ngFor="let option of states" value="{{submitted == false ? option.id:option}}">{{option.name}}</mat-option>             
             </mat-select>
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>City</mat-label>
             <mat-select formControlName="city">
-                <mat-option *ngFor="let option of cities" [value]="option.id">{{option.name}}</mat-option>             
+                <mat-option *ngFor="let option of cities" value="{{submitted == false ? option.id:option}}">{{option.name}}</mat-option>             
             </mat-select>
           </mat-form-field>
         <button mat-raised-button color="primary" [disabled]="!profileForm.valid">Save</button>&nbsp;&nbsp;&nbsp;

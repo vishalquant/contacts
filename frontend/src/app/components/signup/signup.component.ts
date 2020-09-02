@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit,OnDestroy {
   // signup form with the validators
   initializeForm(){
     this.signupForm = this.fb.group({
-      username:['',[Validators.required, Validators.pattern('^(?:\\d{10}|\\w+@\\w+\\.\\w{2,3})$')]],
+      username:['',[Validators.required, Validators.pattern('^(?:\\d{10}|[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4}))$')]],
       password:['',Validators.required]
     })
   }

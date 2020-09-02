@@ -19,12 +19,22 @@ const UserSchema = new Schema({
     dob:{
         type:Date
     },
-    state:{
-        type:String
+    state:{       
+        id:String,
+        name:String,
+        country_id:String        
     },
     city:{
-        type:String
-    }
+       id:String,
+       name:String,
+       state_id:String
+    },
+    friends:[{
+        name:String,
+        phoneNumber:String,
+        email:String,
+        location:String
+    }]
 })
 
 module.exports = mongoose.model('user',UserSchema,'user')

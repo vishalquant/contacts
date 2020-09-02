@@ -7,7 +7,7 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../../../helpers/format-datepi
 import csc from 'country-state-city'
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { ResetPasswordComponent } from '../reset-password/reset-password.component';
+import { ResetPasswordComponent } from '../dialog/reset-password/reset-password.component';
 
 
 @Component({
@@ -27,7 +27,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   errorMsg:string = ""
   successMsg:string = ""
   states:any = []
+  state:any
   cities:any = []
+  city:any
   userId:any = ""
   subscription: Subscription
   constructor(private fb:FormBuilder,
@@ -48,22 +50,31 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.activeRoute.params.subscribe(params => {
       if(params['id']) {
         this.userId = params["id"]
-        console.log("a")
+       
          let profileSubscription = this.userService.getUserProfile(params['id']).subscribe((data)=>{
-            console.log(data)
+            
             if(data && data["success"])
             {
-              this.getCities(data["data"]["state"])
               this.profileForm.patchValue(data["data"])
+              if(data["data"]["state"])
+              {
+                this.getCities(data["data"]["state"]["id"])               
+                this.profileForm.controls["state"].setValue(data["data"]["state"]["id"])
+                this.profileForm.controls["city"].setValue(data["data"]["city"]["id"])
+              }
               this.user = data["data"]
             }
             else{
               this.errorMsg = "Could not load user profile"
             }
+         },(err)=>{
+           this.errorMsg = err.error.message
          });
 
          this.subscription.add(profileSubscription)
       }
+    },(err)=>{
+      this.errorMsg = err.error.message
     });
   }
 
@@ -82,15 +93,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   getCities(state){
-   this.cities = csc.getCitiesOfState(state)
+    if(state)
+      this.cities = csc.getCitiesOfState(state)
   }
 
   onSubmit(profile){
    
 
+    if(profile){
+      profile["state"] = csc.getStateById(profile["state"])
+      profile["city"] = csc.getCityById(profile["city"])
+    }
+
    const saveProfileSubscription =  this.userService.saveUserProfile(this.userId,profile).subscribe((user)=>{
       if(user && user["success"])  {    
-        this.profileForm.patchValue(user["data"])
+       // this.profileForm.patchValue(user["data"])
         this.user = user["data"]
 
         this.errorMsg = ""

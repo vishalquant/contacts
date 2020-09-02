@@ -22,11 +22,19 @@ export class UserService {
     return this.httpClient.get(this.SERVER_URL+"/user/profile/"+userId)
   }
 
+  getAllUsers(){
+    return this.httpClient.get(this.SERVER_URL+"/user")
+  }
+
   saveUserProfile(userId,user){
     return this.httpClient.post(this.SERVER_URL+"/user/profile/"+userId, user)
   }
 
   resetPassword(userId,oldPassword,newPassword){
     return this.httpClient.patch(this.SERVER_URL+"/user/profile/"+userId, { old:oldPassword,new:newPassword })
+  }
+
+  forgotPassword(email,phoneNumber){
+    return this.httpClient.post(this.SERVER_URL+"/user/forgotpassword",{ email:email,phoneNumber:phoneNumber })
   }
 }

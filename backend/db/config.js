@@ -1,5 +1,4 @@
 const dotenv = require('dotenv').config();
-console.log(process.env.MONGO_URL)
 const config = {
     development: {
         url: 'mongodb://localhost/contacts',
@@ -7,7 +6,8 @@ const config = {
     production: {
         
         url: process.env.MONGO_URL,
-    }
+    },
+    clientUrl:'http://localhost:4200/'
 };
 
 module.exports = config;

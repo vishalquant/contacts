@@ -3,7 +3,10 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const router = require("../routes/users");
-
+const nodemailer = require('nodemailer')
+const dotenv = require('dotenv').config();
+const config = require('../db/config');
+const user = require("./../models/user");
 const saltRounds = 10;
 
 
@@ -226,40 +229,179 @@ resetPassword = function(userId,passwordBody){
             if(err)
                 reject(err)
 
-            console.log(user)
-            console.log(passwordBody.old)
+            
             if(user){
-                bcrypt.compare(passwordBody.old,user.password,(err,result)=>{
-                    if(err)
-                        reject(err)
+                if(passwordBody.old){
+                    bcrypt.compare(passwordBody.old,user.password,(err,result)=>{
+                        if(err)
+                            reject(err)
 
-                    if(result){
-                        bcrypt.hash(passwordBody.new,saltRounds,(err,hash)=>{
-                            if(err)
-                                reject(err)
-                                
-                            UserSchema.findByIdAndUpdate(userId,{password:hash},(err,user)=>{
+                        if(result){
+                            bcrypt.hash(passwordBody.new,saltRounds,(err,hash)=>{
                                 if(err)
                                     reject(err)
+                                    
+                                UserSchema.findByIdAndUpdate(userId,{password:hash},(err,user)=>{
+                                    if(err)
+                                        reject(err)
 
-                                resolve(user)
+                                    resolve(user)
 
-                            })
-                        });
-                    }
-                    else{
-                        reject("Incorrect Old Password")
-                    }
-                })
+                                })
+                            });
+                        }
+                        else{
+                            reject("Incorrect Old Password")
+                        }
+                    })
+                }
+                else{
+
+                    bcrypt.hash(passwordBody.new,saltRounds,(err,hash)=>{
+                        if(err)
+                            reject(err)
+                            
+                        UserSchema.findByIdAndUpdate(userId,{password:hash},(err,user)=>{
+                            if(err)
+                                reject(err)
+
+                            resolve(user)
+
+                        })
+                    });
+                }
             }
         })
-    })
+    })    
 }
+
+forgotPassword = function(userInfo){
+
+   return new Promise((resolve,reject)=>{
+
+        if(userInfo.email){
+            console.log(userInfo)
+            console.log(userInfo.email)
+            UserSchema.findOne({email:userInfo.email},(err,user)=>{
+                if(err)
+                    reject(err)
+                if(user)
+                {
+                    sendEmail(userInfo.email,user._id).then((data)=>{ 
+                        console.log("suc")
+                        resolve(data)
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                        reject(err)
+                        })
+                }
+                else{
+                    reject("This email is not registered with us. Please provide a valid email.")
+                }
+
+            })
+        }
+        else{
+            UserSchema.findOne({phoneNumber:userInfo.phoneNumber},(err,user)=>{
+                if(err)
+                    reject(err)
+
+                if(user){
+                    if(user.email)
+                    {
+                        sendEmail(user.email,user._id).then((data)=>(resolve(data))).catch((err)=>reject(err))
+                    }
+                    else{
+                        reject("Update your profile with email")
+                    }
+                }
+                else{
+                    reject("This phone number is not registered with us. Please provide a valid phone number.")
+                }
+            })
+        }
+    })
+
+}
+
+sendEmail = function(email,userId){
+    return new Promise((resolve,reject)=>{
+        transport = nodemailer.createTransport({
+            host: process.env.emailHost,
+            port: process.env.emailPort,
+            secure:true,
+            auth: {
+                user: process.env.emailUser,
+                pass: process.env.emailPassword
+            }
+        })
+
+        const message = {
+            from: process.env.emailUser, 
+            to: email,        
+            subject: 'Reset Password', 
+            html: '<h4><b>Reset Password</b></h4>' +
+            '<p>To reset your password, complete this form:</p>' +
+            '<a href=' + config.clientUrl + 'reset/' + userId +'">Reset Password</a>' +
+            '<br><br>' +
+            '<p>--Team</p>' // Plain text body
+        };
+
+    
+        transport.sendMail(message, function(err, info) {
+            if (err) {
+                console.log(err)
+                reject(err)
+
+            } else {
+            console.log("aa")
+            resolve("email send successfully")
+            }
+        });
+  })  
+}       
+
+getAllUsers = function(){
+
+    return new Promise((resolve,reject)=>{
+
+        UserSchema.find((err,users)=>{
+            if(err)
+                reject(err)
+
+            if(users && users.length>0)
+            {             
+                  
+               let modifiedArray =  users.map(x=>{                
+                   
+                    return {
+                        location :x["state"]["name"] ? (x["state"]["name"] +", " +x["city"]["name"]) : x["state"]["name"],
+                        name:x["name"],
+                        email:x["email"],
+                        phoneNumber:x["phoneNumber"],
+                        dob:x["dob"]
+                        }
+                })
+               
+                resolve(modifiedArray)
+            }
+            else
+                reject("No User found")
+        }).sort({ name : 1})
+
+    })
+
+}
+
+
 
 module.exports = {
     signupUser,
     loginUser,
     getUserProfile,
     saveUserProfile,
-    resetPassword
+    resetPassword,
+    forgotPassword,
+    getAllUsers
 }

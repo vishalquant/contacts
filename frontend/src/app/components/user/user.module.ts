@@ -10,6 +10,8 @@ import {   MatMenuModule } from '@angular/material/menu'
 import {   MatIconModule } from '@angular/material/icon'
 import {   MatButtonModule } from '@angular/material/button'
 import {   MatTableModule } from '@angular/material/table'
+import {   MatSortModule } from '@angular/material/sort';
+import {   MatPaginatorModule } from '@angular/material/paginator';
 import {   MatDividerModule } from '@angular/material/divider'
 import {   MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import {   MatInputModule } from '@angular/material/input'
@@ -19,7 +21,7 @@ import {   MatSelectModule } from '@angular/material/select';
 import {   MatDatepickerModule } from '@angular/material/datepicker';
 import {   MatDialogModule } from '@angular/material/dialog';
 import { MatNativeDateModule } from '@angular/material/core';
-import { ResetPasswordComponent } from './reset-password/reset-password.component'
+import { ResetPasswordComponent } from './dialog/reset-password/reset-password.component'
 // import { MatMomentDateModule } from '@angular/material-moment-adapter'
 @NgModule({
   declarations: [HomeComponent, ProfileComponent, ResetPasswordComponent],
@@ -42,7 +44,10 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDialogModule
-  ]
+    MatDialogModule,
+    MatSortModule,
+    MatPaginatorModule
+  ],
+  exports:[MatSortModule,MatPaginatorModule]
 })
 export class UserModule { }

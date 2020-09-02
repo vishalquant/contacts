@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit,OnDestroy {
   // login form with the validators
   initializeForm(){
     this.loginForm = this.fb.group({
-      username:['',[Validators.required, Validators.pattern('^(?:\\d{10}|\\w+@\\w+\\.\\w{2,3})$')]],
+      username:['',[Validators.required, Validators.pattern('^(?:\\d{10}|[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4}))$')]],
       password:['',Validators.required]
     })
   }
@@ -61,25 +61,28 @@ export class LoginComponent implements OnInit,OnDestroy {
     if(data){
         this.errorMsg = ""
   
-        // On success
+       
         if(data["success"])
         {    
-          // Set local storage to maintain user session
+          
           localStorage.setItem("user",JSON.stringify(data["data"]))
-          // Route to dashboard on successful login
+          
           this.router.navigate(['/home'])
         }
       }
     },(err)=>{      
-      // In case of error show error message
+      
       if(err.error){
         this.errorMsg = err.error.message;       
       }      
-    })
+    })  
 
     this.subscription.add(loginSubscription)
   }
 
+  routeToForgotPassword(){   
+    this.router.navigate(['forgotpassword'])
+  }
   ngOnDestroy() {
     this.subscription.unsubscribe()
   }

@@ -17,7 +17,8 @@
             Please provide a valid password
           </mat-error>
         </mat-form-field>
-        <button mat-raised-button color="primary" [disabled]="!loginForm.valid">LogIn</button>
+        <button mat-raised-button color="primary" [disabled]="!loginForm.valid">LogIn</button>&nbsp;&nbsp;&nbsp;
+        <button type="button" mat-raised-button (click)="routeToForgotPassword();"  color="primary">Forgot Password</button> 
       </form>
     </mat-card-content>
   </mat-card>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userService = require('../services/userservice');
 const userservice = require('../services/userservice');
+const { route } = require('../app');
 
 router.post('/signup',(req,res)=>{
 
@@ -98,21 +99,61 @@ router.patch('/profile/:id',(req,res)=>{
 
   userservice.resetPassword(req.params.id,req.body).then((result)=>{
   
-    // In case of success, send success msg with the data
+   
      return res.json({
        success: true,
        message: "Password has been successfully reset.",
        data: result,
      });
    })
-   .catch((err) => {
-     console.log(err)
-     // In case of error, setting status code
-     // with the error message      
+   .catch((err) => {   
+       
      return res
        .status(400)
        .json({ success: false, message: err, data: null });
    });
 });
+
+router.post('/forgotpassword',(req,res)=>{
+
+  userservice.forgotPassword(req.body).then((result)=>{
+    
+    console.log(result)
+
+    return res.json({
+      success: true,
+      message: "Email sent to your email Id.",
+      data: result,
+    });
+  })
+  .catch((err) => {   
+      
+    return res
+      .status(400)
+      .json({ success: false, message: err, data: null });
+  });
+
+})
+
+
+router.get('/',(req,res)=>{
+
+  userservice.getAllUsers().then((result)=>{
+
+    return res.json({
+      success: true,
+      message: "List of Users",
+      data: result,
+      });
+    })
+    .catch((err) => {   
+        
+      return res
+        .status(400)
+        .json({ success: false, message: err, data: null });
+    });
+
+})
+
 
 module.exports = router;

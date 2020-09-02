@@ -23,6 +23,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header('Access-Control-Allow-Methods', 'PUT, PATCH, POST, GET, DELETE, OPTIONS');
+  //res.header("Accept-Encoding", "gzip, compress, br")
   next();
 });
 
@@ -50,6 +51,12 @@ app.use(function(err, req, res, next) {
 
 process.on('uncaughtException', function (err) {
   console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
+  console.error(err.stack)
+  process.exit(1)
+})
+
+process.on('uncaughtRejection', function (err) {
+  console.error((new Date).toUTCString() + ' uncaughtRejection:', err.message)
   console.error(err.stack)
   process.exit(1)
 })
