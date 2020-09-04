@@ -1,0 +1,5 @@
+{"defaultMeta":"[04/09/2020, 16:03:32] file: users.js route: /:id","level":"info","message":"Method: getAllUsers"}
+{"defaultMeta":"[04/09/2020, 16:07:11] file: users.js route: /:id","level":"info","message":"Method: getAllUsers"}
+{"defaultMeta":"[04/09/2020, 17:05:41] file: users.js route: /login","level":"info","message":"Method: loginUser, Err: undefined"}
+{"defaultMeta":"[04/09/2020, 17:15:10] file: users.js route: /profile/5f52227c24b618833414f2c7","level":"info","message":"Method: resetPassword, Err: undefined"}
+{"defaultMeta":"[04/09/2020, 17:16:23] file: users.js route: /login","level":"info","message":"Method: loginUser, Err: undefined"}

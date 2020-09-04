@@ -2,11 +2,10 @@ const UserSchema = require("./../models/user");
 const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-const router = require("../routes/users");
 const nodemailer = require('nodemailer')
 const dotenv = require('dotenv').config();
 const config = require('../db/config');
-const user = require("./../models/user");
+
 const saltRounds = 10;
 
 
@@ -23,23 +22,12 @@ signupUser = function(user){
                     UserSchema.findOne({email:userModel.email},(err,userData)=>{
                         if(err) 
                             reject(err);
-                        // Check if user already exists or not
+
                         if(userData){
                             reject("User with this email already exists")
                         }
                         else{
-                            bcrypt.hash(user.password,saltRounds,(err,hash)=>{
-                                if(err)
-                                    reject(err)
-                                
-                                userModel.password = hash
-                                userModel.save().then((data)=>{
-                                    delete data.email
-                                    delete data.password
-                                    resolve(data)
-                                })
-
-                            })
+                            hashPasswordAndSaveUser(user,userModel,resolve)
                         }
                     })
                 }
@@ -53,18 +41,7 @@ signupUser = function(user){
                             reject("User with this phone number already exists")
                         }
                         else{
-                            bcrypt.hash(user.password,saltRounds,(err,hash)=>{
-                                if(err)
-                                    reject(err)
-                                
-                                userModel.password = hash
-                                userModel.save().then((data)=>{
-                                    delete data.phoneNumber
-                                    delete data.password
-                                    resolve(data)
-                                })
-
-                            })
+                            hashPasswordAndSaveUser(user,userModel,resolve)
                         }
                     })
                 }
@@ -92,30 +69,9 @@ loginUser = function(user){
                         if(err) 
                             reject(err);
                       
-                         // If data exists
+                        
                         if (!!userData) {
-                            // Comparing the password supplied with the
-                            // hashed password stored in DB
-                            bcrypt.compare(userModel.password, userData.password, function (err, res) {
-                            if (err) {
-                                
-                                // In case of error, reject the promise with error
-                                reject(err);
-                                
-                            }
-                            // If response
-                            if (res) {
-                                let result = JSON.parse(JSON.stringify(userData));
-                                // deleting password and email before sending back to the client
-                                delete result.password;
-                                delete result.email;          
-
-                                resolve(result);
-                            } else {       
-                                                 
-                                reject("Wrong Password !!");
-                                }
-                            });
+                            comparePassword(userModel,userData,resolve,reject)
                         } else {                           
                             reject("User not exist !!");
                         }
@@ -127,27 +83,8 @@ loginUser = function(user){
                         if(err) 
                             reject(err);
 
-                        // If data exists
                         if (!!userData) {
-                            // Comparing the password supplied with the
-                            // hashed password stored in DB
-                            bcrypt.compare(userModel.password, userData.password, function (err, res) {
-                            if (err) {
-                                // In case of error, reject the promise with error
-                                reject(err);
-                            }
-                            // If response
-                            if (res) {
-                                let result = JSON.parse(JSON.stringify(userData));
-                                // deleting password and phone number before sending back to the client
-                                delete result.password;
-                                delete result.phoneNumber;          
-
-                                resolve(result);
-                            } else {                               
-                                reject("Wrong Password !!");
-                            }
-                            });
+                            comparePassword(userModel,userData,resolve,reject)                            
                         } else {                           
                             reject("User not exist !!");
                         }
@@ -163,19 +100,66 @@ loginUser = function(user){
 
 }
 
+hashPasswordAndSaveUser = function(user,userModel,resolve){
+    bcrypt.hash(user.password,saltRounds,(err,hash)=>{
+        if(err)
+            reject(err)
+        
+        userModel.password = hash
+        userModel.save().then((data)=>{
+            delete data.email
+            delete data.password
+            resolve(data)
+        })
+
+    })
+}
+
+hashPasswordAndUpdateUser = function(userId,passwordBody,resolve,reject){
+    bcrypt.hash(passwordBody.new,saltRounds,(err,hash)=>{
+        if(err)
+            reject(err)
+            
+        UserSchema.findByIdAndUpdate(userId,{password:hash},(err,user)=>{
+            if(err)
+                reject(err)
+
+            resolve(user)
+
+        })
+    });
+}
+
+comparePassword = function(userModel,userData,resolve,reject){
+    bcrypt.compare(userModel.password, userData.password, function (err, res) {
+        if (err) {            
+            reject(err);            
+        }
+        if (res) {
+            let result = JSON.parse(JSON.stringify(userData));
+            // deleting password and email before sending back to the client
+            delete result.password;
+            delete result.email; 
+            delete result.phoneNumber;          
+
+            resolve(result);
+        } else {       
+                             
+            reject("Wrong Password !!");
+            }
+        });
+
+}
+
 getUserProfile = function(userId){
 
    return new Promise((resolve,reject)=>{
 
-    UserSchema.findById(userId,(err,user)=>{
-        
-        if(err){
-            
+    UserSchema.findById(userId,(err,user)=>{        
+        if(err){            
             reject(err)
         }
-
-        if(user){
-            
+        if(user){            
             resolve(user)
         }
         else{
@@ -190,20 +174,15 @@ saveUserProfile = function(userId,user){
 
     return new Promise((resolve,reject)=>{
         UserSchema.find({ $or:[{email:user.email},{phoneNumber:user.phoneNumber}], _id: { $ne: new ObjectId(userId) } },(err,userData)=>{
-
-            
             if(err){
-                
                 reject(err)
             }
     
             if(userData && userData.length>0){     
                reject("User with this email or phone number already exists")       
-               // resolve(userData)
             }
             else{
                UserSchema.findByIdAndUpdate(userId,user,{new:true},(err,userData)=>{
-                    
                     if(err){
                         reject(err)
                     }
@@ -213,10 +192,8 @@ saveUserProfile = function(userId,user){
                     else{
                         reject("User not found")
                     }
-                
                 })
             }
-
         })
     })
 }
@@ -229,7 +206,6 @@ resetPassword = function(userId,passwordBody){
             if(err)
                 reject(err)
 
-            
             if(user){
                 if(passwordBody.old){
                     bcrypt.compare(passwordBody.old,user.password,(err,result)=>{
@@ -237,18 +213,7 @@ resetPassword = function(userId,passwordBody){
                             reject(err)
 
                         if(result){
-                            bcrypt.hash(passwordBody.new,saltRounds,(err,hash)=>{
-                                if(err)
-                                    reject(err)
-                                    
-                                UserSchema.findByIdAndUpdate(userId,{password:hash},(err,user)=>{
-                                    if(err)
-                                        reject(err)
-
-                                    resolve(user)
-
-                                })
-                            });
+                            hashPasswordAndUpdateUser(userId,passwordBody,resolve,reject)
                         }
                         else{
                             reject("Incorrect Old Password")
@@ -256,19 +221,7 @@ resetPassword = function(userId,passwordBody){
                     })
                 }
                 else{
-
-                    bcrypt.hash(passwordBody.new,saltRounds,(err,hash)=>{
-                        if(err)
-                            reject(err)
-                            
-                        UserSchema.findByIdAndUpdate(userId,{password:hash},(err,user)=>{
-                            if(err)
-                                reject(err)
-
-                            resolve(user)
-
-                        })
-                    });
+                    hashPasswordAndUpdateUser(userId,passwordBody,resolve,reject)
                 }
             }
         })
@@ -280,19 +233,15 @@ forgotPassword = function(userInfo){
    return new Promise((resolve,reject)=>{
 
         if(userInfo.email){
-            console.log(userInfo)
-            console.log(userInfo.email)
             UserSchema.findOne({email:userInfo.email},(err,user)=>{
                 if(err)
                     reject(err)
                 if(user)
                 {
                     sendEmail(userInfo.email,user._id).then((data)=>{ 
-                        console.log("suc")
                         resolve(data)
                     })
                     .catch((err)=>{
-                        console.log(err)
                         reject(err)
                         })
                 }
@@ -351,22 +300,20 @@ sendEmail = function(email,userId){
     
         transport.sendMail(message, function(err, info) {
             if (err) {
-                console.log(err)
                 reject(err)
 
             } else {
-            console.log("aa")
             resolve("email send successfully")
             }
         });
   })  
 }       
 
-getAllUsers = function(){
+getAllUsers = function(userId){
 
     return new Promise((resolve,reject)=>{
 
-        UserSchema.find((err,users)=>{
+        UserSchema.find({_id: { $ne: new ObjectId(userId) }},(err,users)=>{
             if(err)
                 reject(err)
 
@@ -380,7 +327,8 @@ getAllUsers = function(){
                         name:x["name"],
                         email:x["email"],
                         phoneNumber:x["phoneNumber"],
-                        dob:x["dob"]
+                        dob:x["dob"],
+                        userId:x["id"]
                         }
                 })
                
@@ -394,6 +342,42 @@ getAllUsers = function(){
 
 }
 
+addFriend = function(userId,friend){
+  
+    return new Promise((resolve,reject)=>{
+        UserSchema.findOneAndUpdate({_id:userId},
+            {
+            $addToSet: {
+                friends: friend,
+            },
+          },
+          {
+            new: true,
+            upsert: true,
+            useFindAndModify:false
+          },(err,user)=>{
+            if (err) {               
+               reject(err);
+             }            
+             resolve(user);
+          })
+    })
+}
+
+getFriends = function(userId){
+    
+    return new Promise((resolve,reject)=>{
+        UserSchema.findOne({_id:userId},(err,user)=>{
+
+            if(err)
+                reject(err)
+
+            if(user){
+                resolve(user.friends)
+            }
+        })
+    })
+}
 
 
 module.exports = {
@@ -403,5 +387,7 @@ module.exports = {
     saveUserProfile,
     resetPassword,
     forgotPassword,
-    getAllUsers
+    getAllUsers,
+    addFriend,
+    getFriends
 }

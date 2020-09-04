@@ -21,9 +21,13 @@ export class UserService {
   getUserProfile(userId){
     return this.httpClient.get(this.SERVER_URL+"/user/profile/"+userId)
   }
+ 
+  getAllUsers(userId){
+    return this.httpClient.get(this.SERVER_URL+"/user/"+userId)
+  }
 
-  getAllUsers(){
-    return this.httpClient.get(this.SERVER_URL+"/user")
+  getAllFriends(userId){
+    return this.httpClient.get(this.SERVER_URL+"/user/friends/"+userId)
   }
 
   saveUserProfile(userId,user){
@@ -36,5 +40,9 @@ export class UserService {
 
   forgotPassword(email,phoneNumber){
     return this.httpClient.post(this.SERVER_URL+"/user/forgotpassword",{ email:email,phoneNumber:phoneNumber })
+  }
+
+  addFriend(userId,friend){
+    return this.httpClient.patch(this.SERVER_URL+"/user/friends/"+userId,friend)
   }
 }

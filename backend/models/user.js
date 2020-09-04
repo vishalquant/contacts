@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = mongoose.Types.ObjectId;
+
+//const UserDetail = new Schema({name: String},{ _id : false })
+const UserDetail = new Schema({location: String, name: String, email: String, phoneNumber: Number,dob:Date,userId:ObjectId},{ _id : false })
 
 const UserSchema = new Schema({
 
@@ -29,12 +33,9 @@ const UserSchema = new Schema({
        name:String,
        state_id:String
     },
-    friends:[{
-        name:String,
-        phoneNumber:String,
-        email:String,
-        location:String
-    }]
+    friends:[UserDetail]
 })
+
+
 
 module.exports = mongoose.model('user',UserSchema,'user')
