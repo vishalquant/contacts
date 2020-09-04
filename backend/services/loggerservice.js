@@ -24,7 +24,7 @@ module.exports = {
     },
 
     logError(methodName,fileName,routeName,err){
-        logger.info("Method: "+methodName +", Err: "+err, { defaultMeta:'['+ new Date().toLocaleString()+'] file: '+fileName+' route: '+routeName })   
+        logger.error("Method: "+methodName +", Err: "+err, { defaultMeta:'['+ new Date().toLocaleString()+'] file: '+fileName+' route: '+routeName })   
     }
 }
 // If we're not in production then log to the `console`
