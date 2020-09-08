@@ -5,6 +5,15 @@
 
   "rules": {
     "prettier/prettier": "error",
-    "no-console": [2]
+    "no-console": [
+      true,
+      "debug",
+      "error",
+      "info",
+      "log",
+      "time",
+      "timeEnd",
+      "trace"
+    ]
   }
 }
