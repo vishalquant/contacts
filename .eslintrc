@@ -5,7 +5,7 @@
 
   "rules": {
     "prettier/prettier": "error",
-    "no-console": "off",
+    "no-console": "on",
     "no-restricted-syntax": [
       "error",
       {
