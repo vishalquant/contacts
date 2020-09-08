@@ -18,7 +18,7 @@ tokenCreation = function (data) {
 verifyTokenFunc = function (req, res, next) {
   const header = req.get('Authorization');
   const accessToken = header && header.split(' ')[1];
-  console.log('Sd');
+  Console.log('Sd');
   jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY, (err, user) => {
     if (err) return res.sendStatus(403);
     next();
