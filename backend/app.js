@@ -2,9 +2,9 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const winston = require('winston');
 
 require('./db/mongodb');
+const winston = require('./helpers/winston');
 
 const usersRouter = require('./routes/users');
 
@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
   res.header(
     'Access-Control-Allow-Headers',
     'Authorization, Origin, X-Requested-With, Content-Type, Accept'
@@ -48,10 +48,16 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  winston.error(
+    `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+      req.method
+    } - ${req.ip}`
+  );
 
   // render the error page
   res.status(err.status || 500);
@@ -59,14 +65,21 @@ app.use(function (err, req, res, next) {
 });
 
 process.on('uncaughtException', function (err) {
-  console.error(new Date().toUTCString() + ' uncaughtException:', err.message);
-  console.error(err.stack);
+  winston.error(
+    `${new Date().toUTCString() + ' uncaughtException:'} -  ${err.message} - ${
+      req.originalUrl
+    } - ${req.method} - ${req.ip}`
+  );
   process.exit(1);
 });
 
 process.on('uncaughtRejection', function (err) {
-  console.error(new Date().toUTCString() + ' uncaughtRejection:', err.message);
-  console.error(err.stack);
+  winston.error(
+    `${new Date().toUTCString() + ' uncaughtRejection:'} -  ${err.message} - ${
+      req.originalUrl
+    } - ${req.method} - ${req.ip}`
+  );
+
   process.exit(1);
 });
 

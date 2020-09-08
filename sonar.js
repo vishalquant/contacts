@@ -5,7 +5,7 @@ sonarqubeScanner(
     serverUrl,
     options: {
       'sonar.sources': '.',
-      'sonar.inclusions': '/backend/**', // Entry point of your code
+      'sonar.inclusions': '/**', // Entry point of your code
     },
   },
   () => {}

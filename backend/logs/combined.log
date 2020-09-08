@@ -1,12 +1,76 @@
-{"defaultMeta":"[04/09/2020, 16:03:32] file: users.js route: /:id","level":"info","message":"Method: getAllUsers"}
-{"defaultMeta":"[04/09/2020, 16:07:11] file: users.js route: /:id","level":"info","message":"Method: getAllUsers"}
-{"defaultMeta":"[04/09/2020, 17:05:41] file: users.js route: /login","level":"info","message":"Method: loginUser, Err: undefined"}
-{"defaultMeta":"[04/09/2020, 17:15:10] file: users.js route: /profile/5f52227c24b618833414f2c7","level":"info","message":"Method: resetPassword, Err: undefined"}
-{"defaultMeta":"[04/09/2020, 17:16:23] file: users.js route: /login","level":"info","message":"Method: loginUser, Err: undefined"}
-{"defaultMeta":"[07/09/2020, 17:31:02] file: users.js route: /login","level":"error","message":"Method: loginUser, Err: undefined"}
-{"defaultMeta":"[07/09/2020, 17:31:05] file: users.js route: /login","level":"error","message":"Method: loginUser, Err: undefined"}
-{"defaultMeta":"[07/09/2020, 17:31:07] file: users.js route: /login","level":"error","message":"Method: loginUser, Err: undefined"}
-{"defaultMeta":"[07/09/2020, 17:31:14] file: users.js route: /login","level":"error","message":"Method: loginUser, Err: undefined"}
-{"defaultMeta":"[08/09/2020, 12:13:49] file: users.js route: /login","level":"error","message":"Method: loginUser, Err: undefined"}
-{"defaultMeta":"[08/09/2020, 12:13:55] file: users.js route: /login","level":"error","message":"Method: loginUser, Err: undefined"}
-{"defaultMeta":"[08/09/2020, 12:13:57] file: users.js route: /login","level":"error","message":"Method: loginUser, Err: undefined"}
+{"message":"User Login","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"500 - userService.getAllUsers1 is not a function - /api/user/5f562122262b30150f12036c - GET - ::1","level":"error"}
+{"message":"Get User Friends","level":"info"}
+{"message":"500 - userService.getAllUsers1 is not a function - /api/user/5f562122262b30150f12036c - GET - ::1","level":"error"}
+{"message":"Get User Friends","level":"info"}
+{"message":"500 - userService.getAllUsers1 is not a function - /api/user/5f562122262b30150f12036c - GET - undefined - ::1","level":"error"}
+{"message":"Get User Friends","level":"info"}
+{"message":"500 - userService.getAllUsers1 is not a function - /api/user/5f562122262b30150f12036c - GET - ::1","level":"error"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"User Login","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}
+{"message":"List of users","level":"info"}
+{"message":"Get User Friends","level":"info"}

@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { compare } = require('bcrypt');
 
-tokenCreation = function (data) {
+const tokenCreation = function (data) {
   let userPayLoad = '';
   if (data.email) {
     userPayLoad = {
@@ -15,11 +14,11 @@ tokenCreation = function (data) {
   return jwt.sign(userPayLoad, process.env.ACCESS_TOKEN_KEY);
 };
 
-verifyTokenFunc = function (req, res, next) {
+const verifyTokenFunc = function (req, res, next) {
   const header = req.get('Authorization');
   const accessToken = header && header.split(' ')[1];
-  console.log('Sd');
-  jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY, (err, user) => {
+
+  jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY, (err) => {
     if (err) return res.sendStatus(403);
     next();
   });

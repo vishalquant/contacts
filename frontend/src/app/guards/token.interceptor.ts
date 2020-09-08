@@ -14,7 +14,7 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    //Check for url. If it is login url then return
+    // Check for url. If it is login url then return
     if (request.url.includes('login') || request.url.includes('signup')) {
       console.log(request.url);
       return next.handle(request);
@@ -25,7 +25,7 @@ export class TokenInterceptor implements HttpInterceptor {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem('user'))['token']
+            JSON.parse(localStorage.getItem('user')).token
           }`,
         },
       });

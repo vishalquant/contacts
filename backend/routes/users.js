@@ -2,19 +2,24 @@ const express = require('express');
 const router = express.Router();
 const userService = require('../services/userservice');
 const dataService = require('../services/dataservice');
-const loggerService = require('../services/loggerservice');
 const verifyToken = require('../helpers/token').verifyTokenFunc;
+const logger = require('../helpers/winston');
 
 router.post('/signup', (req, res) => {
   userService
     .signupUser(req.body)
     .then((result) => {
+      logger.info('User Signup');
       return res.json(
         dataService.returnSuccess(result, 'Thank you for signing up.')
       );
     })
     .catch((err) => {
-      loggerService.logError('signupUser', 'users.js', req.url, err.error);
+      logger.error(
+        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+          req.method
+        } - ${req.ip}`
+      );
       return res.status(400).json(dataService.returnFailure(err));
     });
 });
@@ -23,12 +28,17 @@ router.post('/login', (req, res) => {
   userService
     .loginUser(req.body)
     .then((result) => {
+      logger.info('User Login');
       return res.json(
         dataService.returnSuccess(result, 'Sucessfully logged In')
       );
     })
     .catch((err) => {
-      loggerService.logError('loginUser', 'users.js', req.url, err.error);
+      logger.error(
+        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+          req.method
+        } - ${req.ip}`
+      );
       return res.status(400).json(dataService.returnFailure(err));
     });
 });
@@ -37,12 +47,17 @@ router.get('/profile/:id', verifyToken, (req, res) => {
   userService
     .getUserProfile(req.params.id)
     .then((result) => {
+      logger.info('Get User Profile');
       return res.json(
         dataService.returnSuccess(result, 'User Profile Details')
       );
     })
     .catch((err) => {
-      loggerService.logError('getUserProfile', 'users.js', req.url, err.error);
+      logger.error(
+        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+          req.method
+        } - ${req.ip}`
+      );
       return res.status(400).json(dataService.returnFailure(err));
     });
 });
@@ -51,12 +66,17 @@ router.post('/profile/:id', verifyToken, (req, res) => {
   userService
     .saveUserProfile(req.params.id, req.body)
     .then((result) => {
+      logger.info('Update User Profile');
       return res.json(
         dataService.returnSuccess(result, 'Profile saved successfully.')
       );
     })
     .catch((err) => {
-      loggerService.logError('saveUserProfile', 'users.js', req.url, err.error);
+      logger.error(
+        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+          req.method
+        } - ${req.ip}`
+      );
       return res.status(400).json(dataService.returnFailure(err));
     });
 });
@@ -65,6 +85,7 @@ router.patch('/profile/:id', verifyToken, (req, res) => {
   userService
     .resetPassword(req.params.id, req.body)
     .then((result) => {
+      logger.info('Update user Password');
       return res.json(
         dataService.returnSuccess(
           result,
@@ -73,7 +94,11 @@ router.patch('/profile/:id', verifyToken, (req, res) => {
       );
     })
     .catch((err) => {
-      loggerService.logError('resetPassword', 'users.js', req.url, err.error);
+      logger.error(
+        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+          req.method
+        } - ${req.ip}`
+      );
       return res.status(400).json(dataService.returnFailure(err));
     });
 });
@@ -82,24 +107,34 @@ router.post('/forgotpassword', (req, res) => {
   userService
     .forgotPassword(req.body)
     .then((result) => {
+      logger.info('Send forget password Email');
       return res.json(
         dataService.returnSuccess(result, 'Email sent to your email Id.')
       );
     })
     .catch((err) => {
-      loggerService.logError('forgotPassword', 'users.js', req.url, err.error);
+      logger.error(
+        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+          req.method
+        } - ${req.ip}`
+      );
       return res.status(400).json(dataService.returnFailure(err));
     });
 });
 
-router.get('/:id', verifyTokenFunc, (req, res) => {
+router.get('/:id', verifyToken, (req, res) => {
   userService
     .getAllUsers(req.params.id)
     .then((result) => {
+      logger.info('List of users');
       return res.json(dataService.returnSuccess(result, 'List of Users'));
     })
     .catch((err) => {
-      loggerService.logError('getAllUsers', 'users.js', req.url, err.error);
+      logger.error(
+        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+          req.method
+        } - ${req.ip}`
+      );
       return res.status(400).json(dataService.returnFailure(err));
     });
 });
@@ -108,6 +143,7 @@ router.patch('/friends/:id', verifyToken, (req, res) => {
   userService
     .addFriend(req.params.id, req.body)
     .then((result) => {
+      logger.info('Update friends list');
       return res.json(
         dataService.returnSuccess(
           result,
@@ -116,7 +152,11 @@ router.patch('/friends/:id', verifyToken, (req, res) => {
       );
     })
     .catch((err) => {
-      loggerService.logError('addFriend', 'users.js', req.url, err.error);
+      logger.error(
+        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+          req.method
+        } - ${req.ip}`
+      );
       return res.status(400).json(dataService.returnFailure(err));
     });
 });
@@ -125,10 +165,15 @@ router.get('/friends/:id', verifyToken, (req, res) => {
   userService
     .getFriends(req.params.id, req.body)
     .then((result) => {
+      logger.info('Get User Friends');
       return res.json(dataService.returnSuccess(result, 'Friend’s list.'));
     })
     .catch((err) => {
-      loggerService.logError('getFriends', 'users.js', req.url, err.error);
+      logger.error(
+        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+          req.method
+        } - ${req.ip}`
+      );
       return res.status(400).json(dataService.returnFailure(err));
     });
 });

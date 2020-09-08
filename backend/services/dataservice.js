@@ -1,4 +1,4 @@
-returnSuccess = function (data, msg) {
+const returnSuccess = function (data, msg) {
   return {
     success: true,
     message: msg,
@@ -6,12 +6,12 @@ returnSuccess = function (data, msg) {
   };
 };
 
-returnFailure = function (err) {
-  return {
-    success: false,
-    message: err,
-    data: null,
-  };
+const returnFailure = function (err) {
+  //   return {
+  //     success: false,
+  //     message: err,
+  //     data: null,
+  //   };
 };
 
 module.exports = {

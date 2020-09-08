@@ -25,7 +25,6 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetComponent } from './components/reset/reset.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './guards/token.interceptor';
-//import {   MatOptionModule} from '@angular/material/select'
 
 @NgModule({
   declarations: [
@@ -54,7 +53,6 @@ import { TokenInterceptor } from './guards/token.interceptor';
     MatDividerModule,
     MatSlideToggleModule,
     MatSelectModule,
-    //MatOptionModule,
     MatProgressSpinnerModule,
   ],
   providers: [

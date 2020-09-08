@@ -9,7 +9,7 @@ const jwt = require('../helpers/token');
 
 const saltRounds = 10;
 
-signupUser = function (user) {
+const signupUser = function (user) {
   return new Promise((resolve, reject) => {
     if (user) {
       const userModel = new UserSchema(user);
@@ -46,7 +46,7 @@ signupUser = function (user) {
   });
 };
 
-loginUser = function (user) {
+const loginUser = function (user) {
   return new Promise((resolve, reject) => {
     if (user) {
       const userModel = new UserSchema(user);
@@ -83,7 +83,7 @@ loginUser = function (user) {
   });
 };
 
-hashPasswordAndSaveUser = function (user, userModel, resolve) {
+const hashPasswordAndSaveUser = function (user, userModel, resolve) {
   bcrypt.hash(user.password, saltRounds, (err, hash) => {
     if (err) reject(err);
 
@@ -95,19 +95,28 @@ hashPasswordAndSaveUser = function (user, userModel, resolve) {
   });
 };
 
-hashPasswordAndUpdateUser = function (userId, passwordBody, resolve, reject) {
+const hashPasswordAndUpdateUser = function (
+  userId,
+  passwordBody,
+  resolve,
+  reject
+) {
   bcrypt.hash(passwordBody.new, saltRounds, (err, hash) => {
     if (err) reject(err);
 
-    UserSchema.findByIdAndUpdate(userId, { password: hash }, (err, user) => {
-      if (err) reject(err);
+    UserSchema.findByIdAndUpdate(
+      userId,
+      { password: hash },
+      (errUpdate, user) => {
+        if (errUpdate) reject(errUpdate);
 
-      resolve(user);
-    });
+        resolve(user);
+      }
+    );
   });
 };
 
-comparePassword = function (userModel, userData, resolve, reject) {
+const comparePassword = function (userModel, userData, resolve, reject) {
   bcrypt.compare(userModel.password, userData.password, function (err, res) {
     if (err) {
       reject(err);
@@ -122,7 +131,7 @@ comparePassword = function (userModel, userData, resolve, reject) {
   });
 };
 
-getUserProfile = function (userId) {
+const getUserProfile = function (userId) {
   return new Promise((resolve, reject) => {
     UserSchema.findById(userId, (err, user) => {
       if (err) {
@@ -137,7 +146,7 @@ getUserProfile = function (userId) {
   });
 };
 
-saveUserProfile = function (userId, user) {
+const saveUserProfile = function (userId, user) {
   return new Promise((resolve, reject) => {
     UserSchema.find(
       {
@@ -155,13 +164,13 @@ saveUserProfile = function (userId, user) {
           UserSchema.findByIdAndUpdate(
             userId,
             user,
-            { new: true },
-            (err, userData) => {
-              if (err) {
-                reject(err);
+            { new: true, upsert: true },
+            (errUpdate, updatedUser) => {
+              if (errUpdate) {
+                reject(errUpdate);
               }
-              if (userData) {
-                resolve(user);
+              if (updatedUser) {
+                resolve(updatedUser);
               } else {
                 reject('User not found');
               }
@@ -173,22 +182,31 @@ saveUserProfile = function (userId, user) {
   });
 };
 
-resetPassword = function (userId, passwordBody) {
+const resetPassword = function (userId, passwordBody) {
   return new Promise((resolve, reject) => {
     UserSchema.findById(userId, (err, user) => {
       if (err) reject(err);
 
       if (user) {
         if (passwordBody.old) {
-          bcrypt.compare(passwordBody.old, user.password, (err, result) => {
-            if (err) reject(err);
+          bcrypt.compare(
+            passwordBody.old,
+            user.password,
+            (errComparePwd, result) => {
+              if (errComparePwd) reject(errComparePwd);
 
-            if (result) {
-              hashPasswordAndUpdateUser(userId, passwordBody, resolve, reject);
-            } else {
-              reject('Incorrect Old Password');
+              if (result) {
+                hashPasswordAndUpdateUser(
+                  userId,
+                  passwordBody,
+                  resolve,
+                  reject
+                );
+              } else {
+                reject('Incorrect Old Password');
+              }
             }
-          });
+          );
         } else {
           hashPasswordAndUpdateUser(userId, passwordBody, resolve, reject);
         }
@@ -197,7 +215,7 @@ resetPassword = function (userId, passwordBody) {
   });
 };
 
-forgotPassword = function (userInfo) {
+const forgotPassword = function (userInfo) {
   return new Promise((resolve, reject) => {
     if (userInfo.email) {
       UserSchema.findOne({ email: userInfo.email }, (err, user) => {
@@ -207,8 +225,8 @@ forgotPassword = function (userInfo) {
             .then((data) => {
               resolve(data);
             })
-            .catch((err) => {
-              reject(err);
+            .catch((emailErr) => {
+              reject(emailErr);
             });
         } else {
           reject(
@@ -224,7 +242,7 @@ forgotPassword = function (userInfo) {
           if (user.email) {
             sendEmail(user.email, user._id)
               .then((data) => resolve(data))
-              .catch((err) => reject(err));
+              .catch((emailErr) => reject(emailErr));
           } else {
             reject('Update your profile with email');
           }
@@ -238,9 +256,9 @@ forgotPassword = function (userInfo) {
   });
 };
 
-sendEmail = function (email, userId) {
+const sendEmail = function (email, userId) {
   return new Promise((resolve, reject) => {
-    transport = nodemailer.createTransport({
+    const transport = nodemailer.createTransport({
       host: process.env.emailHost,
       port: process.env.emailPort,
       secure: true,
@@ -276,7 +294,7 @@ sendEmail = function (email, userId) {
   });
 };
 
-getAllUsers = function (userId) {
+const getAllUsers = function (userId) {
   return new Promise((resolve, reject) => {
     UserSchema.find({ _id: { $ne: new ObjectId(userId) } }, (err, users) => {
       if (err) reject(err);
@@ -301,7 +319,7 @@ getAllUsers = function (userId) {
   });
 };
 
-addFriend = function (userId, friend) {
+const addFriend = function (userId, friend) {
   return new Promise((resolve, reject) => {
     UserSchema.findOneAndUpdate(
       { _id: userId },
@@ -325,7 +343,7 @@ addFriend = function (userId, friend) {
   });
 };
 
-getFriends = function (userId) {
+const getFriends = function (userId) {
   return new Promise((resolve, reject) => {
     UserSchema.findOne({ _id: userId }, (err, user) => {
       if (err) reject(err);

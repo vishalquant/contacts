@@ -2,5 +2,5 @@ projectKey=assignment
 serverUrl=http://localhost
 serverVersion=8.4.2.36762
 dashboardUrl=http://localhost/dashboard?id=assignment
-ceTaskId=AXRoZ6va4f12XXN-dynV
-ceTaskUrl=http://localhost/api/ce/task?id=AXRoZ6va4f12XXN-dynV
+ceTaskId=AXRtXoM3hv2TF8fU0lIM
+ceTaskUrl=http://localhost/api/ce/task?id=AXRtXoM3hv2TF8fU0lIM
