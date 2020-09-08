@@ -5,15 +5,13 @@
 
   "rules": {
     "prettier/prettier": "error",
-    "no-console": [
-      true,
-      "debug",
+    "no-console": "off",
+    "no-restricted-syntax": [
       "error",
-      "info",
-      "log",
-      "time",
-      "timeEnd",
-      "trace"
+      {
+        "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
+        "message": "Unexpected property on console object was called"
+      }
     ]
   }
 }
