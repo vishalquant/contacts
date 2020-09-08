@@ -1,73 +1,111 @@
 <div>
-<h2 style="padding-left: 10px;">Contacts</h2>
-<div fxLayout style="padding-left: 10px;  margin: auto;
-padding: 10px;">
+  <h2 style="padding-left: 10px">Contacts</h2>
+  <div fxLayout style="margin: auto; padding: 10px">
     <mat-form-field>
-      <input matInput type="text" placeholder="Search Friends" (keyup)="filterContacts($event.target.value)" [(ngModel)]="searchText">
-      <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="searchText">
+      <input
+        matInput
+        type="text"
+        placeholder="Search Friends"
+        (keyup)="filterContacts($event.target.value)"
+        [(ngModel)]="searchText"
+      />
+      <button
+        mat-button
+        mat-icon-button
+        matSuffix
+        (click)="clearSearchField()"
+        *ngIf="searchText"
+      >
         <mat-icon>close</mat-icon>
-    </button>
+      </button>
     </mat-form-field>
   </div>
 </div>
 <mat-error *ngIf="errorMsg">
-    {{errorMsg}}
-  </mat-error>
-  <mat-success *ngIf="successMsg">
-    {{successMsg}}
-  </mat-success>
-<table mat-table [dataSource]="dataSource" matSort>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td mat-cell *matCellDef="let contact"> <mat-icon mat-card-avatar>accessibility</mat-icon>{{contact.name}} </td>
-    </ng-container>
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email or PhoneNumber </th>
-      <td mat-cell *matCellDef="let contact"> {{ contact.email ? contact.email : contact.phoneNumber}} </td>
-    </ng-container>
-    <ng-container matColumnDef="dob">
-      <th mat-header-cell *matHeaderCellDef> Date of Birth </th>
-      <td mat-cell *matCellDef="let contact"> {{contact.dob | date}} </td>
-    </ng-container>
-    <ng-container matColumnDef="location">
-        <th mat-header-cell *matHeaderCellDef> Location </th>
-        <td mat-cell *matCellDef="let contact"> {{contact.location}} </td>
-      </ng-container>
-    <ng-container matColumnDef="addFriend">
-      <th mat-header-cell *matHeaderCellDef> Add Friend </th>
-      <td mat-cell *matCellDef="let contact">
-        <button mat-icon-button color="primary" (click)="addToFriendsList(contact)">
-            <mat-icon class="mat-18">add</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <div *ngIf="noRecord" style="padding-left: 10px;  margin: auto;
-  padding: 10px; width:140px">
-    No Record Found
-   </div>
-  <mat-paginator [pageSize]="defaultPageSize" [pageSizeOptions]="pageOptions">
-  </mat-paginator>
+  {{ errorMsg }}
+</mat-error>
+<mat-success *ngIf="successMsg">
+  {{ successMsg }}
+</mat-success>
+<table
+  mat-table
+  [dataSource]="dataSource"
+  matSort
+  aria-describedby="Contacts list view"
+>
+  <ng-container matColumnDef="name">
+    <th scope="row" mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+    <td mat-cell *matCellDef="let contact">
+      <mat-icon mat-card-avatar>accessibility</mat-icon>{{ contact.name }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <th scope="row" mat-header-cell *matHeaderCellDef>Email or PhoneNumber</th>
+    <td mat-cell *matCellDef="let contact">
+      {{ contact.email ? contact.email : contact.phoneNumber }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="dob">
+    <th scope="row" mat-header-cell *matHeaderCellDef>Date of Birth</th>
+    <td mat-cell *matCellDef="let contact">{{ contact.dob | date }}</td>
+  </ng-container>
+  <ng-container matColumnDef="location">
+    <th scope="row" mat-header-cell *matHeaderCellDef>Location</th>
+    <td mat-cell *matCellDef="let contact">{{ contact.location }}</td>
+  </ng-container>
+  <ng-container matColumnDef="addFriend">
+    <th scope="row" mat-header-cell *matHeaderCellDef>Add Friend</th>
+    <td mat-cell *matCellDef="let contact">
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="addToFriendsList(contact)"
+      >
+        <mat-icon class="mat-18">add</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<div *ngIf="noRecord" style="margin: auto; padding: 10px; width: 140px">
+  No Record Found
+</div>
+<mat-paginator [pageSize]="defaultPageSize" [pageSizeOptions]="pageOptions">
+</mat-paginator>
 
-  <table mat-table [dataSource]="friendsDataSource" *ngIf="friendsDataSource && friendsDataSource.data && friendsDataSource.data.length>0">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let contact"> <mat-icon mat-card-avatar>accessibility</mat-icon>{{contact.name}} </td>
-    </ng-container>
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email or PhoneNumber </th>
-      <td mat-cell *matCellDef="let contact"> {{ contact.email ? contact.email : contact.phoneNumber}} </td>
-    </ng-container>
-    <ng-container matColumnDef="dob">
-      <th mat-header-cell *matHeaderCellDef> Date of Birth </th>
-      <td mat-cell *matCellDef="let contact"> {{contact.dob | date}} </td>
-    </ng-container>
-    <ng-container matColumnDef="location">
-        <th mat-header-cell *matHeaderCellDef> Location </th>
-        <td mat-cell *matCellDef="let contact"> {{contact.location}} </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedFriendsColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedFriendsColumns;"></tr>
+<table
+  mat-table
+  aria-describedby="Friends List"
+  [dataSource]="friendsDataSource"
+  *ngIf="
+    friendsDataSource &&
+    friendsDataSource.data &&
+    friendsDataSource.data.length > 0
+  "
+>
+  <ng-container matColumnDef="name">
+    <th id="rowName" mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let contact">
+      <mat-icon mat-card-avatar>accessibility</mat-icon>{{ contact.name }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <th id="rowEmail" mat-header-cell *matHeaderCellDef>
+      Email or PhoneNumber
+    </th>
+    <td mat-cell *matCellDef="let contact">
+      {{ contact.email ? contact.email : contact.phoneNumber }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="dob">
+    <th id="rowDob" mat-header-cell *matHeaderCellDef>Date of Birth</th>
+    <td mat-cell *matCellDef="let contact">{{ contact.dob | date }}</td>
+  </ng-container>
+  <ng-container matColumnDef="location">
+    <th id="rowLoc" mat-header-cell *matHeaderCellDef>Location</th>
+    <td mat-cell *matCellDef="let contact">{{ contact.location }}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedFriendsColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedFriendsColumns"></tr>
 </table>

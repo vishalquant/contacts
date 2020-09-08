@@ -9,20 +9,22 @@ import { AppComponent } from './app.component';
 import { SignupComponent } from './components/signup/signup.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import {   MatToolbarModule } from '@angular/material/toolbar'
-import {   MatMenuModule } from '@angular/material/menu'
-import {   MatIconModule } from '@angular/material/icon'
-import {   MatButtonModule } from '@angular/material/button'
-import {   MatTableModule } from '@angular/material/table'
-import {   MatDividerModule } from '@angular/material/divider'
-import {   MatProgressSpinnerModule } from '@angular/material/progress-spinner'
-import {   MatInputModule } from '@angular/material/input'
-import {   MatCardModule } from '@angular/material/card'
-import {   MatSlideToggleModule } from '@angular/material/slide-toggle'
-import {   MatSelectModule } from '@angular/material/select'; 
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 import { LoginComponent } from './components/login/login.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { ResetComponent } from './components/reset/reset.component'
+import { ResetComponent } from './components/reset/reset.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './guards/token.interceptor';
 //import {   MatOptionModule} from '@angular/material/select'
 
 @NgModule({
@@ -31,11 +33,11 @@ import { ResetComponent } from './components/reset/reset.component'
     SignupComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    ResetComponent
+    ResetComponent,
   ],
   imports: [
-    BrowserModule,  
-    AppRoutingModule,    
+    BrowserModule,
+    AppRoutingModule,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -53,10 +55,16 @@ import { ResetComponent } from './components/reset/reset.component'
     MatSlideToggleModule,
     MatSelectModule,
     //MatOptionModule,
-    MatProgressSpinnerModule
-  
+    MatProgressSpinnerModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      // Using HTTP interceptor, to send token in every HTTP request being made
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

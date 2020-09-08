@@ -1,0 +1,19 @@
+{
+  "extends": ["plugin:prettier/recommended"],
+
+  "plugins": ["prettier"],
+
+  "rules": {
+    "prettier/prettier": "error",
+    "no-console": [
+      true,
+      "debug",
+      "error",
+      "info",
+      "log",
+      "time",
+      "timeEnd",
+      "trace"
+    ]
+  }
+}
