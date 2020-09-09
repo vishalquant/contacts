@@ -16,7 +16,7 @@ router.post('/signup', (req, res) => {
     })
     .catch((err) => {
       logger.error(
-        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+        `${err.status || 400} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
       );
@@ -35,7 +35,7 @@ router.post('/login', (req, res) => {
     })
     .catch((err) => {
       logger.error(
-        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+        `${err.status || 400} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
       );
@@ -54,7 +54,7 @@ router.get('/profile/:id', verifyToken, (req, res) => {
     })
     .catch((err) => {
       logger.error(
-        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+        `${err.status || 400} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
       );
@@ -73,7 +73,7 @@ router.post('/profile/:id', verifyToken, (req, res) => {
     })
     .catch((err) => {
       logger.error(
-        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+        `${err.status || 400} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
       );
@@ -95,7 +95,7 @@ router.patch('/profile/:id', verifyToken, (req, res) => {
     })
     .catch((err) => {
       logger.error(
-        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+        `${err.status || 400} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
       );
@@ -114,7 +114,7 @@ router.post('/forgotpassword', (req, res) => {
     })
     .catch((err) => {
       logger.error(
-        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+        `${err.status || 400} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
       );
@@ -131,7 +131,7 @@ router.get('/:id', verifyToken, (req, res) => {
     })
     .catch((err) => {
       logger.error(
-        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+        `${err.status || 400} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
       );
@@ -153,7 +153,7 @@ router.patch('/friends/:id', verifyToken, (req, res) => {
     })
     .catch((err) => {
       logger.error(
-        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+        `${err.status || 400} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
       );
@@ -170,7 +170,7 @@ router.get('/friends/:id', verifyToken, (req, res) => {
     })
     .catch((err) => {
       logger.error(
-        `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+        `${err.status || 400} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
       );

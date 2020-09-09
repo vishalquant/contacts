@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "sonar": "sonar-scanner sonar.js"
+    "test": "jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
@@ -21,6 +24,7 @@
   },
   "devDependencies": {
     "jest": "^26.4.2",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "sinon": "^9.0.3"
   }
 }
