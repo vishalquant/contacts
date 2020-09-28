@@ -2,5 +2,5 @@ projectKey=backend
 serverUrl=http://localhost
 serverVersion=8.4.2.36762
 dashboardUrl=http://localhost/dashboard?id=backend
-ceTaskId=AXRoGt_g4f12XXN-dym7
-ceTaskUrl=http://localhost/api/ce/task?id=AXRoGt_g4f12XXN-dym7
+ceTaskId=AXTTyRXs_G6UdimojBqA
+ceTaskUrl=http://localhost/api/ce/task?id=AXTTyRXs_G6UdimojBqA

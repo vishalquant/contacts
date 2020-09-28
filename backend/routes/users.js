@@ -122,7 +122,7 @@ router.post('/forgotpassword', (req, res) => {
     });
 });
 
-router.get('/:id', verifyToken, (req, res) => {
+router.get('/:id', (req, res) => {
   userService
     .getAllUsers(req.params.id)
     .then((result) => {

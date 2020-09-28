@@ -7,7 +7,6 @@ const config = {
   },
   test: {
     url: 'mongodb://localhost/contacts-test',
-    jwt_key: 'thisistestkey',
   },
 
   clientUrl: 'http://localhost:4200/',
